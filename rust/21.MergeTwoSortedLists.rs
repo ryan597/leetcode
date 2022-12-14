@@ -22,6 +22,9 @@ impl Solution {
         let mut tmp2 = list2;
 
         match (tmp1.as_ref(), tmp2.as_ref()) {
+            (None, None) => return None,
+            (None, Some(n2)) => return tmp2,
+            (Some(n1), None) => return tmp1,
             (Some(n1), Some(n2)) => {
                 if (n1.val <= n2.val) {
                     head = n1.clone();
@@ -32,9 +35,6 @@ impl Solution {
                     tmp2 = tmp2.unwrap().next;
                 }
             },
-            (None, None) => return None,
-            (None, Some(n2)) => return tmp2,
-            (Some(n1), None) => return tmp1,
         };
 
         let mut node = head.as_mut();
@@ -51,17 +51,16 @@ impl Solution {
                         tmp2 = tmp2.unwrap().next;
                     }
                 },
-                (None, None) => return Some(head),
-                (None, Some(n2)) => {
+                (None, _) => {
                     node.next = tmp2;
                     return Some(head)
                 },
-                (Some(n1), None) => {
+                (_, None) => {
                     node.next = tmp1;
                     return Some(head)
                 },
             };
-            node = node.next.as_mut().unwrap().as_mut();
+            node = node.next.as_mut().unwrap();
         }
     }
 }
